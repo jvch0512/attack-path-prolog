@@ -1,0 +1,29 @@
+% A made-up estate. Zones: dmz, app, admin, data.
+asset(web1, dmz, normal).
+asset(web2, dmz, normal).
+asset(app1, app, normal).
+asset(jump1, admin, normal).
+asset(files1, app, normal).
+asset(db1, data, crown).
+asset(backup1, data, crown).
+
+exposed(web1, https).
+exposed(web2, https).
+exposed(jump1, ssh).
+
+vuln(web1, 'CVE-2024-1001', rce).
+vuln(web2, 'CVE-2024-1002', info_leak).
+vuln(app1, 'CVE-2024-1003', privesc).
+vuln(files1, 'CVE-2024-1004', rce).
+vuln(jump1, 'CVE-2024-1005', info_leak).
+
+% network reach (needs a vuln on the target)
+link(web1, app1, network).
+link(web2, app1, network).
+link(app1, files1, network).
+link(app1, db1, network).
+% stolen trust (no vuln needed on the target)
+link(web1, files1, password).
+link(files1, db1, token).
+link(files1, backup1, ssh_key).
+link(jump1, app1, ssh_key).

@@ -1,0 +1,8 @@
+# 4 attack paths, 7 findings
+critical	PATH	internet -> web1 -> files1 -> backup1	web1 exploited via CVE-2024-1001 (rce); web1 -> files1 by password; files1 -> backup1 by ssh_key
+critical	PATH	internet -> web1 -> files1 -> db1	web1 exploited via CVE-2024-1001 (rce); web1 -> files1 by password; files1 -> db1 by token
+high	CHOKE	app1	sits on 2 of 4 paths: fixing or isolating it cuts them
+high	CHOKE	files1	sits on 4 of 4 paths: fixing or isolating it cuts them
+high	CHOKE	web1	sits on 4 of 4 paths: fixing or isolating it cuts them
+high	PATH	internet -> web1 -> app1 -> files1 -> backup1	web1 exploited via CVE-2024-1001 (rce); web1 -> app1 via CVE-2024-1003 (privesc); app1 -> files1 via CVE-2024-1004 (rce); files1 -> backup1 by ssh_key
+high	PATH	internet -> web1 -> app1 -> files1 -> db1	web1 exploited via CVE-2024-1001 (rce); web1 -> app1 via CVE-2024-1003 (privesc); app1 -> files1 via CVE-2024-1004 (rce); files1 -> db1 by token

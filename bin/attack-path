@@ -1,0 +1,3 @@
+#!/bin/sh
+D=$(cd "$(dirname "$0")/.." && pwd)
+exec swipl -q -f none -g main -t 'halt(1)' "$D/src/attack_path.pl" -- "$@"
