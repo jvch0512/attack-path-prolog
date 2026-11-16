@@ -2,6 +2,8 @@
 
 attack-path answers one question security teams ask constantly and rarely can prove: starting from what is exposed to the internet, which chains of vulnerabilities and trust relationships reach the assets that matter, and which single fix cuts the most paths. You describe the estate as a short list of facts, and the Prolog engine does the reasoning.
 
+![Terminal demo of attack-path-prolog on its sample data](docs/demo.svg)
+
 **Live demo:** https://jvch0512.github.io/attack-path-prolog/ (A made-up estate: web, app, jump host, file server, database and a backup server.)
 
 SWI-Prolog 9 (swipl), no packages beyond plunit for tests. The demo page is rendered from the tool's `--tsv` output by `scripts/site.py` (Python 3, only needed to regenerate the page).
@@ -52,3 +54,13 @@ make test    # 22 plunit tests
 ```
 
 MIT.
+
+## Code scanning (SARIF)
+
+`scripts/tsv2sarif.py` converts the `--tsv` output into SARIF 2.1.0, so findings show up in GitHub code scanning:
+
+```sh
+./bin/attack-path examples/estate.facts --tsv | python3 scripts/tsv2sarif.py --tool attack-path-prolog --prefix examples > results.sarif
+```
+
+Upload `results.sarif` with `github/codeql-action/upload-sarif`. Severities map to SARIF levels (critical and high to error, medium to warning, low and info to note) and to a `security-severity` score.
